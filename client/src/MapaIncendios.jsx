@@ -4,6 +4,7 @@ import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import CapaDepartamentos from "./CapaDepartamentos"; // Importa el nuevo componente
 import GraficaAlertas from "./GraficaAlertas"; // Asegúrate de tener la ruta correcta al archivo
+import MapSearchBar from "./MapSearchBar";
 
 const MapTitle = ({ title, width = "auto", height = "auto" }) => {
   const map = useMap();
