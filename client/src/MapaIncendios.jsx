@@ -4,6 +4,7 @@ import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import CapaDepartamentos from "./CapaDepartamentos"; // Importa el nuevo componente
 import GraficaAlertas from "./GraficaAlertas"; // Asegúrate de tener la ruta correcta al archivo
+import MapSearchBar from "./MapSearchBar";
 
 const MapTitle = ({ title, width = "auto", height = "auto" }) => {
   const map = useMap();
@@ -79,11 +80,16 @@ const ControlCheckbox = ({ label, initialState, onChange }) => {
   const map = useMap(); // Hook para acceder al objeto del mapa
 
   useState(() => {
-    const controlDiv = L.DomUtil.create("div", "leaflet-control");
+    const controlDiv = L.DomUtil.create(
+      "div",
+      "leaflet-control checkbox-container"
+    );
     controlDiv.style.padding = "6px";
-    controlDiv.style.backgroundColor = "white";
+    controlDiv.style.backgroundColor = "rgba(74,193,141,0.4)";
     controlDiv.style.border = "1px solid #ccc";
-    controlDiv.style.borderRadius = "4px";
+    controlDiv.style.borderRadius = "9px";
+    controlDiv.style.boxShadow = "0 2px 4px rgba(169,245,245,0.8)"; // Sombra para dar efecto elevado
+    controlDiv.style.transition = "box-shadow 0.2s, transform 0.2s"; // Transición suave para efecto
 
     const input = L.DomUtil.create("input", "", controlDiv);
     input.type = "checkbox";
@@ -94,8 +100,19 @@ const ControlCheckbox = ({ label, initialState, onChange }) => {
     const labelElement = L.DomUtil.create("label", "", controlDiv);
     labelElement.appendChild(input);
     labelElement.append(label);
+    labelElement.style.cursor = "pointer"; // Hace que el cursor sea un puntero para indicar que es clickeable
 
     L.DomEvent.disableClickPropagation(controlDiv);
+
+    L.DomEvent.on(controlDiv, "mousedown", () => {
+      controlDiv.style.boxShadow = "0 1px 2px rgba(0,0,0,0.2)"; // Sombra más pequeña para efecto hundido
+      controlDiv.style.transform = "translateY(1px)"; // Mueve ligeramente hacia abajo
+    });
+
+    L.DomEvent.on(controlDiv, "mouseup", () => {
+      controlDiv.style.boxShadow = "0 2px 4px rgba(0,0,0,0.2)"; // Restaura sombra original
+      controlDiv.style.transform = "translateY(0)"; // Restaura posición original
+    });
 
     const customControl = L.control({ position: "topright" });
     customControl.onAdd = () => controlDiv;
@@ -103,6 +120,8 @@ const ControlCheckbox = ({ label, initialState, onChange }) => {
 
     return () => {
       map.removeControl(customControl);
+      L.DomEvent.off(controlDiv, "mousedown");
+      L.DomEvent.off(controlDiv, "mouseup");
     };
   }, [map, label, initialState, onChange]);
 

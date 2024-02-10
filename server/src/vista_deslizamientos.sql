@@ -13,7 +13,8 @@ jsonb_build_object(
     'PROBABILIDAD', d."PROBABILIDAD",
     'REGION', d."REGION",
     'DEPARTAMENTO', d."DEPARTAMENTO",
-    'MUNICIPIO', d."MUNICIPIO"
+    'MUNICIPIO', d."MUNICIPIO",
+	  'FECHA_EJECUCION', d."FECHA_EJECUCION"
   )
 ) AS geom
 FROM deslizamientos AS d
