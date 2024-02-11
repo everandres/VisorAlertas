@@ -1,0 +1,31 @@
+version: "3.8"
+services:
+  app:
+    build: .
+    volumes:
+      - "G:/Mi unidad/OSPA/01. Tematicas/04. Incendios/01. Productos/postmodelo_icv/temporales:/data/incendios"
+      - "G:/Mi unidad/OSPA/01. Tematicas/03. Deslizamientos/01. Productos/postmodelo_idd/temporales:/data/deslizamientos"
+    depends_on:
+      - db
+    environment:
+      - DATABASE_URL=postgresql://postgres:Septiembre@db:5432/alertas
+
+  db:
+    image: postgis/postgis
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Septiembre0672
+      POSTGRES_DB: alertas
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "andressalmercado@gmail.com"
+      PGADMIN_DEFAULT_PASSWORD: "Septiembre0672"
+    ports:
+      - "5050:80"
+
+volumes:
+  db_data:
