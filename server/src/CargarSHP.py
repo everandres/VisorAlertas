@@ -21,7 +21,7 @@ contraseña = 'Septiembre0672'
 host = 'localhost'
 puerto = '5432'
 db = 'alertas'
-url_conexion = f'postgresql://postgres:Septiembre0672@db:5432/alertas'
+url_conexion = 'postgresql://postgres:Septiembre0672@db:5432/alertas'
 
 
 # In[11]:

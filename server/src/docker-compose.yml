@@ -2,30 +2,42 @@ version: "3.8"
 services:
   app:
     build: .
+    image: mi_app_personalizada:latest # Nombre personalizado para la imagen construida
     volumes:
-      - "G:/Mi unidad/OSPA/01. Tematicas/04. Incendios/01. Productos/postmodelo_icv/temporales:/data/incendios"
-      - "G:/Mi unidad/OSPA/01. Tematicas/03. Deslizamientos/01. Productos/postmodelo_idd/temporales:/data/deslizamientos"
+      - "C:/Users/Ever Salazar/Documents/incendios:/data/incendios"
+      - "C:/Users/Ever Salazar/Documents/deslizamientos:/data/deslizamientos"
     depends_on:
       - db
     environment:
-      - DATABASE_URL=postgresql://postgres:Septiembre@db:5432/alertas
+      - DATABASE_URL=postgresql://postgres:Septiembre0672@db:5432/alertas
+    networks:
+      - mi_red_personalizada
 
   db:
     image: postgis/postgis
+    container_name: mi_db_postgis # Nombre personalizado para el contenedor de la base de datos
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: Septiembre0672
       POSTGRES_DB: alertas
     volumes:
       - db_data:/var/lib/postgresql/data
+    networks:
+      - mi_red_personalizada
 
   pgadmin:
     image: dpage/pgadmin4
+    container_name: mi_pgadmin # Nombre personalizado para el contenedor de pgAdmin
     environment:
       PGADMIN_DEFAULT_EMAIL: "andressalmercado@gmail.com"
       PGADMIN_DEFAULT_PASSWORD: "Septiembre0672"
     ports:
       - "5050:80"
+    networks:
+      - mi_red_personalizada
+
+networks:
+  mi_red_personalizada: # Definición de la red personalizada
 
 volumes:
   db_data:
