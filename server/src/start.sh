@@ -32,5 +32,4 @@ END
 # Ejecuta tus scripts de Python
 python CargarSHP.py
 python AlertasSQL.py
-python desencadenador.py
 # Puedes añadir comandos adicionales aquí si es necesario
