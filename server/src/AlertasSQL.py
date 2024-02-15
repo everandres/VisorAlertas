@@ -13,8 +13,8 @@ from sqlalchemy.exc import SQLAlchemyError
 # In[2]:
 
 # Leer el archivo CSV
-df_incendios = pd.read_csv('/data/incendios/probabilidad_icv.csv', sep=';', encoding='utf-8')
-df_deslizamientos = pd.read_csv('/data/deslizamientos/probabilidad_idd.csv', sep=';', encoding='utf-8')
+df_incendios = pd.read_csv('/var/lib/data/incendios/probabilidad_icv.csv', sep=';', encoding='utf-8')
+df_deslizamientos = pd.read_csv('/var/lib/data/deslizamientos/probabilidad_idd.csv', sep=';', encoding='utf-8')
 
 # In[3]:
 

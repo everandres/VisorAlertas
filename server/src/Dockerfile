@@ -1,6 +1,10 @@
 # Usamos una imagen base de Python
 FROM python:3.9
 
+
+# Instala inotify-tools
+RUN apt-get update && apt-get install -y inotify-tools
+
 # Establecemos el directorio de trabajo
 WORKDIR /usr/src/app
 
