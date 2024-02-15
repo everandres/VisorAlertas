@@ -29,7 +29,7 @@ else:
     sys.exit(1)
 END
 
-# Ejecuta tus scripts de Python
+# Ejecuta el script CargarSHP.py una vez al inicio
 python CargarSHP.py
 python AlertasSQL.py
-# Puedes añadir comandos adicionales aquí si es necesario
+python monitor.py
