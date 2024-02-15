@@ -32,8 +32,12 @@ def alertas_incendios(url, df_incendios):
     try:
         engine = create_engine(url_conexion)
         return df_incendios.to_sql('incendios', con=engine, if_exists='replace', index=False)
-    except SQLAlchemyError as e:
-        return(f"Error al insertar datos de incendios: {e}")
+    except:
+        engine = create_engine(url_conexion)
+        # Eliminar los registros existentes de la tabla 'incendios'
+        with engine.connect() as conn:
+            conn.execute("DELETE FROM incendios")
+        return df_incendios.to_sql('incendios', con=engine, if_exists='append', index=False)
 
 # In[5]:
 
@@ -45,8 +49,12 @@ def alertas_deslizamientos(url, df_deslizamientos):
     try:
         engine = create_engine(url_conexion)
         return df_deslizamientos.to_sql('deslizamientos', con=engine, if_exists='replace', index=False)
-    except SQLAlchemyError as e:
-        return(f"Error al insertar datos de deslizamientos: {e}")
+    except:
+        engine = create_engine(url_conexion)
+        # Eliminar los registros existentes de la tabla 'incendios'
+        with engine.connect() as conn:
+            conn.execute("DELETE FROM deslizamientos")
+        return df_deslizamientos.to_sql('deslizamientos', con=engine, if_exists='append', index=False)
 
 # In[7]:
 
