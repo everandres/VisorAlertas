@@ -36,7 +36,8 @@ def alertas_incendios(url, df_incendios):
         engine = create_engine(url_conexion)
         # Eliminar los registros existentes de la tabla 'incendios'
         with engine.connect() as conn:
-            conn.execute("DELETE FROM incendios")
+            conn.execute(text("DELETE FROM incendios"))
+            conn.commit()
         return df_incendios.to_sql('incendios', con=engine, if_exists='append', index=False)
 
 # In[5]:
@@ -45,7 +46,7 @@ print(alertas_incendios(url_conexion, df_incendios))
 
 # In[6]:
 
-def alertas_deslizamientos(url, df_deslizamientos):
+def alertas_deslizamientos(url_conexion, df_deslizamientos):
     try:
         engine = create_engine(url_conexion)
         return df_deslizamientos.to_sql('deslizamientos', con=engine, if_exists='replace', index=False)
@@ -53,7 +54,8 @@ def alertas_deslizamientos(url, df_deslizamientos):
         engine = create_engine(url_conexion)
         # Eliminar los registros existentes de la tabla 'incendios'
         with engine.connect() as conn:
-            conn.execute("DELETE FROM deslizamientos")
+            conn.execute(text("DELETE FROM deslizamientos"))
+            conn.commit()
         return df_deslizamientos.to_sql('deslizamientos', con=engine, if_exists='append', index=False)
 
 # In[7]:
