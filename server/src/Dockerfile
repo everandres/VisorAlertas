@@ -6,7 +6,7 @@ FROM python:3.9
 RUN apt-get update && apt-get install -y inotify-tools
 
 # Establecemos el directorio de trabajo
-WORKDIR /usr/src/app
+WORKDIR /usr/src/app/src
 
 # Copiamos el archivo de dependencias y lo instalamos
 COPY requirements.txt ./
