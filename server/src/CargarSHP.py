@@ -23,7 +23,7 @@ def cargar_departamentos(gdf, url_conexion):
         gdf['geometry'] = gdf['geometry'].apply(lambda x: wkb.dumps(x, hex=True))
         gdf = gdf.rename(columns={'geometry': 'geom'})
        
-        return gdf.to_sql('departamentos_wgs84', engine, if_exists='replace', index=False, 
+        return gdf.to_sql('departamentos_wgs84', engine, if_exists='fail', index=False, 
                dtype={'geom': Geometry(geometry_type='GEOMETRY', srid=4326)})
     except:
         pass
@@ -41,7 +41,7 @@ def cargar_municipios(gdf, url_conexion):
         gdf['geometry'] = gdf['geometry'].apply(lambda x: wkb.dumps(x, hex=True))
         gdf = gdf.rename(columns={'geometry': 'geom'})
        
-        return gdf.to_sql('mgn_mpio_politico', engine, if_exists='replace', index=False, 
+        return gdf.to_sql('mgn_mpio_politico', engine, if_exists='fail', index=False, 
                dtype={'geom': Geometry(geometry_type='GEOMETRY', srid=4326)})
     except:
         pass
