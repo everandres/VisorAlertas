@@ -18,6 +18,6 @@ FROM nginx:alpine
 # Aseguramos que la ruta de origen es la correcta al copiar al contenedor de nginx
 COPY --from=build-stage /usr/src/app/client/build /usr/share/nginx/html
 
-EXPOSE 80
+EXPOSE 8080
 
 CMD ["nginx", "-g", "daemon off;"]
