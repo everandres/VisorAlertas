@@ -46,6 +46,15 @@ services:
     networks:
       - mi_red_personalizada
 
+  frontend:
+    build: ./client
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    networks:
+      - mi_red_personalizada
+
 networks:
   mi_red_personalizada: # Definición de la red personalizada
 
