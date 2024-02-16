@@ -1,22 +1,18 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[1]:
-
 import pandas as pd
 from sqlalchemy import create_engine, text
+from sqlalchemy.exc import SQLAlchemyError
+import os
+import time
+
+
+# Importaciones adicionales
 import geopandas as gpd
 from geoalchemy2 import Geometry
 import shapely.wkb as wkb
-from sqlalchemy.exc import SQLAlchemyError
 
-# In[2]:
-
-# Leer el archivo CSV
-df_incendios = pd.read_csv('/var/lib/data/incendios/probabilidad_icv.csv', sep=';', encoding='utf-8')
-df_deslizamientos = pd.read_csv('/var/lib/data/deslizamientos/probabilidad_idd.csv', sep=';', encoding='utf-8')
-
-# In[3]:
 
 # Crear una conexión a la base de datos
 usuario = 'postgres'
@@ -24,43 +20,41 @@ contraseña = 'Septiembre0672'
 host = 'localhost'
 puerto = '5432'
 db = 'alertas'
+#url_conexion = f'postgresql://{usuario}:{contraseña}@{host}:{puerto}/{db}'
 url_conexion = 'postgresql://postgres:Septiembre0672@db:5432/alertas'
 
-# In[4]:
 
-def alertas_incendios(url, df_incendios):
+df_incendios = '/var/lib/data/incendios/probabilidad_icv.csv'
+df_deslizamientos = '/var/lib/data/deslizamientos/probabilidad_idd.csv'
+
+def alertas_incendios(url_conexion, ruta_archivo):
+    df_incendios = pd.read_csv(ruta_archivo, sep=';', encoding='utf-8')
     try:
         engine = create_engine(url_conexion)
-        return df_incendios.to_sql('incendios', con=engine, if_exists='replace', index=False)
-    except:
+        df_incendios.to_sql('incendios', con=engine, if_exists='replace', index=False)
+    except Exception as e:
         engine = create_engine(url_conexion)
-        # Eliminar los registros existentes de la tabla 'incendios'
         with engine.connect() as conn:
             conn.execute(text("DELETE FROM incendios"))
             conn.commit()
-        return df_incendios.to_sql('incendios', con=engine, if_exists='append', index=False)
+        df_incendios.to_sql('incendios', con=engine, if_exists='append', index=False)
+    print("Datos de incendios actualizados.")
 
-# In[5]:
+# In[4]:
 
-print(alertas_incendios(url_conexion, df_incendios))
-
-# In[6]:
-
-def alertas_deslizamientos(url_conexion, df_deslizamientos):
+def alertas_deslizamientos(url_conexion, ruta_archivo):
+    df_deslizamientos = pd.read_csv(ruta_archivo, sep=';', encoding='utf-8')
     try:
         engine = create_engine(url_conexion)
-        return df_deslizamientos.to_sql('deslizamientos', con=engine, if_exists='replace', index=False)
-    except:
+        df_deslizamientos.to_sql('deslizamientos', con=engine, if_exists='replace', index=False)
+    except Exception as e:
         engine = create_engine(url_conexion)
-        # Eliminar los registros existentes de la tabla 'incendios'
         with engine.connect() as conn:
             conn.execute(text("DELETE FROM deslizamientos"))
             conn.commit()
-        return df_deslizamientos.to_sql('deslizamientos', con=engine, if_exists='append', index=False)
+        df_deslizamientos.to_sql('deslizamientos', con=engine, if_exists='append', index=False)
+    print("Datos de deslizamientos actualizados.")
 
-# In[7]:
-
-print(alertas_deslizamientos(url_conexion, df_deslizamientos))
 
 # In[8]:
 
@@ -85,11 +79,7 @@ FROM public.departamentos_wgs84
     except SQLAlchemyError as e:
         return(f"Error al crear la vista departamentos_colombia: {e}")
 
-# In[9]:
 
-print(vista_departamentos(url_conexion))
-
-# In[10]:
 
 def vista_deslizamientos(url_conexion):
     engine = create_engine(url_conexion)
@@ -123,7 +113,6 @@ INNER JOIN mgn_mpio_politico AS mg ON d."COD_DANE" = mg.mpio_cdpmp;
     except SQLAlchemyError as e:
         return(f"Error al crear la vista alertas_deslizamientos: {e}")
 
-print(vista_deslizamientos(url_conexion))
 
 def vista_incendios(url_conexion):
     engine = create_engine(url_conexion)
@@ -157,4 +146,35 @@ INNER JOIN mgn_mpio_politico AS mg ON i."COD_DANE" = mg.mpio_cdpmp;
     except SQLAlchemyError as e:
         return(f"Error al crear la vista alertas_incendios: {e}")
 
-print(vista_incendios(url_conexion))
+# Función de monitoreo
+def monitorear_archivos():
+    ultima_modificacion_incendios = None
+    ultima_modificacion_deslizamientos = None
+    ruta_archivo_incendios = '/var/lib/data/incendios/probabilidad_icv.csv'
+    ruta_archivo_deslizamientos = '/var/lib/data/deslizamientos/probabilidad_idd.csv'
+
+    while True:
+        try:
+            modificacion_actual_incendios = os.path.getmtime(ruta_archivo_incendios)
+            if modificacion_actual_incendios != ultima_modificacion_incendios:
+                alertas_incendios(url_conexion, ruta_archivo_incendios)
+                ultima_modificacion_incendios = modificacion_actual_incendios
+
+            modificacion_actual_deslizamientos = os.path.getmtime(ruta_archivo_deslizamientos)
+            if modificacion_actual_deslizamientos != ultima_modificacion_deslizamientos:
+                alertas_deslizamientos(url_conexion, ruta_archivo_deslizamientos)
+                ultima_modificacion_deslizamientos = modificacion_actual_deslizamientos
+        except Exception as e:
+            print(f"Error durante el monitoreo: {e}")
+
+        time.sleep(10)  # Espera 10 segundos antes de verif
+
+
+
+if __name__ == "__main__":
+    alertas_incendios(url_conexion, df_incendios)
+    alertas_deslizamientos(url_conexion, df_deslizamientos)
+    print(vista_departamentos(url_conexion))
+    print(vista_deslizamientos(url_conexion))
+    print(vista_incendios(url_conexion))
+    monitorear_archivos()
