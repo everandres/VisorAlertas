@@ -31,14 +31,13 @@ def alertas_incendios(url_conexion, ruta_archivo):
     df_incendios = pd.read_csv(ruta_archivo, sep=';', encoding='utf-8')
     try:
         engine = create_engine(url_conexion)
-        df_incendios.to_sql('incendios', con=engine, if_exists='replace', index=False)
+        return df_incendios.to_sql('incendios', con=engine, index=False)
     except Exception as e:
         engine = create_engine(url_conexion)
         with engine.connect() as conn:
             conn.execute(text("DELETE FROM incendios"))
             conn.commit()
-        df_incendios.to_sql('incendios', con=engine, if_exists='append', index=False)
-    print("Datos de incendios actualizados.")
+        return df_incendios.to_sql('incendios', con=engine, if_exists='append', index=False)
 
 # In[4]:
 
@@ -46,15 +45,13 @@ def alertas_deslizamientos(url_conexion, ruta_archivo):
     df_deslizamientos = pd.read_csv(ruta_archivo, sep=';', encoding='utf-8')
     try:
         engine = create_engine(url_conexion)
-        df_deslizamientos.to_sql('deslizamientos', con=engine, if_exists='replace', index=False)
+        return df_deslizamientos.to_sql('deslizamientos', con=engine, index=False)
     except Exception as e:
         engine = create_engine(url_conexion)
         with engine.connect() as conn:
             conn.execute(text("DELETE FROM deslizamientos"))
             conn.commit()
-        df_deslizamientos.to_sql('deslizamientos', con=engine, if_exists='append', index=False)
-    print("Datos de deslizamientos actualizados.")
-
+        return df_deslizamientos.to_sql('deslizamientos', con=engine, if_exists='append', index=False)
 
 # In[8]:
 
@@ -171,10 +168,10 @@ def monitorear_archivos():
 
 
 
-if __name__ == "__main__":
-    alertas_incendios(url_conexion, df_incendios)
-    alertas_deslizamientos(url_conexion, df_deslizamientos)
-    print(vista_departamentos(url_conexion))
-    print(vista_deslizamientos(url_conexion))
-    print(vista_incendios(url_conexion))
-    monitorear_archivos()
+
+print(alertas_incendios(url_conexion, df_incendios))
+print(alertas_deslizamientos(url_conexion, df_deslizamientos))
+print(vista_departamentos(url_conexion))
+print(vista_deslizamientos(url_conexion))
+print(vista_incendios(url_conexion))
+print(monitorear_archivos())
