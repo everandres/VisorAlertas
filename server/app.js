@@ -11,6 +11,7 @@ app.use(cors());
 app.use(express.json());
 app.use("/api/v1", incendios);
 
-app.listen(8000, () => {
-  console.log("Servidor escuchando");
+const PUERTO = process.env.PUERTO || 8000;
+app.listen(PUERTO, "0.0.0.0", () => {
+  console.log(`Servidor escuchando en puerto ${PUERTO}`);
 });
