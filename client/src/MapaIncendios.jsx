@@ -3,7 +3,7 @@ import { MapContainer, TileLayer, GeoJSON, useMap } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import CapaDepartamentos from "./CapaDepartamentos"; // Importa el nuevo componente
-import GraficaAlertas from "./GraficaAlertas"; // Asegúrate de tener la ruta correcta al archivo
+import GraficaAlertas from "./GraficaAlertasBoton"; // Asegúrate de tener la ruta correcta al archivo
 import MapSearchBar from "./MapSearchBar";
 
 const MapTitle = ({ title, width = "auto", height = "auto" }) => {
@@ -192,7 +192,7 @@ export const MapaIncendios = ({ incendios, departamentos, deslizamientos }) => {
       style={{ height: "100vh", width: "100vw" }}
     >
       <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-      <GraficaAlertas buttonUrl="https://www.ejemplo.com" />
+      <GraficaAlertas buttonUrl="/graficas" />
       <MapLogo logoUrl={logoUrl} /> {/* Incluir el logo en el mapa */}
       <MapTitle title="Alertas Ambientales Vigentes - Oficina del Servicio de Pronósticos y Alertas" />
       <ControlCheckbox

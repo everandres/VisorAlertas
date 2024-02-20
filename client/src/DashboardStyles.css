@@ -1,0 +1,56 @@
+/* DashboardStyles.css */
+.dashboard-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: start;
+  gap: 20px;
+  padding: 20px;
+}
+
+.chart-container,
+.table-container {
+  flex: 1 1 50%;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+.chart-container {
+  /* Additional styles if needed for the chart container */
+}
+
+.table-container {
+  /* Additional styles if needed for the table container */
+}
+
+.dashboard-button {
+  padding: 10px 20px;
+  margin: 10px 0;
+  font-size: 1em;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+/* Add other styles such as for your tables, buttons, etc. */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table th,
+.table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+.table tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.table th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  background-color: #4caf50;
+  color: white;
+}

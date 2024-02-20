@@ -24,8 +24,8 @@ db = 'alertas'
 url_conexion = 'postgresql://postgres:Septiembre0672@db:5432/alertas'
 
 
-df_incendios = '/var/lib/data/incendios/probabilidad_icv.csv'
-df_deslizamientos = '/var/lib/data/deslizamientos/probabilidad_idd.csv'
+df_incendios = 'C:/Users/Ever Salazar/Documents/incendios/probabilidad_icv.csv'
+df_deslizamientos = 'C:/Users/Ever Salazar/Documents/deslizamientos/probabilidad_idd.csv'
 
 def alertas_incendios(url_conexion, ruta_archivo):
     df_incendios = pd.read_csv(ruta_archivo, sep=';', encoding='utf-8')
