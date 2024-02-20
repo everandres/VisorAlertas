@@ -197,13 +197,13 @@ const GraficasDeslizamientosIncendios = () => {
   return (
     <div className="dashboard">
       <h1 className="titulo-general">
-        Alertas Vigentes Por Pronóstico de la Amenaza De{" "}
+        Alertas Vigentes por Pronóstico de la Amenaza de{" "}
         {mostrarIncendios
           ? "Incendios de la Cobertura Vegetal"
           : "Deslizamientos de tierra"}
       </h1>
       <h4 className="fecha-ejecucion">Fecha de ejecución: {fechaEjecucion}</h4>
-
+      <h4 className="fecha-ejecucion"> Alertas generadas a partir de datos preliminares </h4>
       <div className="columna-izquierda">
         <button
           className="boton-cambio"
