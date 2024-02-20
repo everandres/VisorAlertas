@@ -1,56 +1,182 @@
-/* DashboardStyles.css */
-.dashboard-container {
+/* Selector universal - Cambia la fuente de todos los elementos */
+* {
+  font-family: "Arial Narrow", Arial, sans-serif;
+}
+
+/* O puedes aplicarlo solo al cuerpo del documento para que se herede */
+body {
+  font-family: "Arial Narrow", Arial, sans-serif;
+}
+
+.dashboard {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
-  align-items: start;
-  gap: 20px;
-  padding: 20px;
+  justify-content: space-between;
+  max-width: 100vw; /* Asegura que el dashboard no exceda el ancho de la vista */
+  max-height: 100vh; /* Asegura que el dashboard no exceda el alto de la vista */
+  transform: scale(0.8); /* Escala todo el dashboard para hacerlo más pequeño */
+}
+.columna-izquierda,
+.columna-derecha {
+  flex: 1 1 auto; /* Hace que las columnas sean flexibles y llenen el espacio disponible */
+  max-width: calc(50% - 20px); /* Ajusta el máximo de ancho de las columnas */
+  min-width: 300px; /* Establece un ancho mínimo para las columnas */
 }
 
-.chart-container,
-.table-container {
-  flex: 1 1 50%;
-  padding: 10px;
-  box-sizing: border-box;
-}
-
-.chart-container {
-  /* Additional styles if needed for the chart container */
-}
-
-.table-container {
-  /* Additional styles if needed for the table container */
-}
-
-.dashboard-button {
+.boton-cambio {
   padding: 10px 20px;
-  margin: 10px 0;
-  font-size: 1em;
+  font-size: 16px;
   font-weight: bold;
+  color: #ffffff;
+  background-color: #b6dbab;
+  border: none;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.3s, box-shadow 0.3s, transform 0.3s;
   cursor: pointer;
 }
 
-/* Add other styles such as for your tables, buttons, etc. */
-.table {
-  width: 100%;
-  border-collapse: collapse;
+.boton-cambio:hover {
+  background-color: #ce5f33;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
-.table th,
-.table td {
-  border: 1px solid #ddd;
-  padding: 8px;
-  text-align: left;
+.boton-cambio:active {
+  transform: translateY(2px);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 }
 
-.table tr:nth-child(even) {
-  background-color: #f2f2f2;
+/*
+.boton-cambio {
+  align-self: center;
+  margin: 10px 0;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+*/
+
+.contenedor-grafica {
+  display: flex;
+  flex-direction: column; /* Organiza los hijos en una columna */
+  align-items: center; /* Centra los hijos horizontalmente */
+  justify-content: center; /* Centra los hijos verticalmente (si es necesario) */
+  text-align: center; /* Asegura que el texto también esté centrado */
+  margin: 50px;
+  padding: 20px;
+  border-radius: 10px;
+  background-color: #f9f9f9;
 }
 
-.table th {
-  padding-top: 12px;
-  padding-bottom: 12px;
-  background-color: #4caf50;
-  color: white;
+.contenedor-grafica-barras,
+.contenedor-tablas {
+  border: 1px solid #ccc;
+  margin: 10px;
+  padding: 20px;
+  border-radius: 10px;
+  background-color: #f9f9f9;
+  margin-bottom: 50px; /* Espacio abajo */
+}
+
+.contenedor-tablas {
+  display: flex;
+  justify-content: space-around; /* Asegura que los contenedores tengan espacio alrededor de ellos */
+  flex-wrap: nowrap; /* Permite que los contenedores se ajusten según el tamaño de la pantalla */
+}
+
+.contenedor-grafica-barras {
+  margin-top: 80px;
+  margin-bottom: 50px; /* Espacio abajo */
+}
+
+.tabla-contenedor {
+  flex: 1 1 30%; /* Cambia la base de flex y el crecimiento */
+  max-width: 30%; /* Establece un máximo de ancho */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  margin: 10px;
+  padding: 10px;
+  border-radius: 10px;
+  background-color: #f9f9f9; /* Color de fondo predeterminado */
+}
+
+/* Ajustes para dispositivos más pequeños */
+@media (max-width: 768px) {
+  .titulo-general {
+    font-size: 24px; /* Tamaño de fuente más pequeño para pantallas pequeñas */
+  }
+
+  .contenedor-grafica,
+  .contenedor-grafica-barras,
+  .contenedor-tablas {
+    margin: 5px;
+    padding: 10px; /* Menos espacio para evitar apretar los contenidos */
+  }
+
+  .boton-cambio {
+    padding: 12px 24px; /* Botón más grande para facilitar la interacción */
+  }
+
+  th,
+  td {
+    padding: 8px; /* Espaciado de celda ajustado para mejorar la visibilidad */
+  }
+}
+
+th,
+td {
+  text-align: center; /* Centra el texto en las celdas de encabezado y cuerpo */
+}
+
+th {
+  padding: 10px 0; /* Añade padding al encabezado para asegurar espacio vertical */
+}
+
+table {
+  width: 100%; /* Asegura que la tabla tome todo el ancho de su contenedor */
+  border-collapse: collapse; /* Elimina el espacio entre las celdas */
+}
+
+/* Estilos para la fila del total */
+tbody tr:last-child {
+  font-weight: bold; /* Hace que el total sea en negrita */
+}
+
+/* Clases específicas para colores de fondo con opacidad */
+.probabilidad-1 {
+  background-color: rgba(255, 255, 0, 0.5); /* Amarillo con opacidad */
+}
+
+.probabilidad-2 {
+  background-color: rgba(255, 165, 0, 0.5); /* Naranja con opacidad */
+}
+
+.probabilidad-3 {
+  background-color: rgba(255, 0, 0, 0.5); /* Rojo con opacidad */
+}
+
+.contenedor-grafica h1 {
+  font-size: 24px; /* O el tamaño de fuente que prefieras */
+  margin: 20px 0; /* Espacio arriba y abajo del título */
+}
+
+/* Puedes añadir una clase específica para los totales si quieres controlar su estilo */
+.contenedor-totales {
+  font-size: 18px; /* O el tamaño de fuente que prefieras para los totales */
+}
+
+.titulo-general {
+  text-align: center; /* Centra el texto */
+  width: 100%; /* Ocupa todo el ancho */
+  margin-top: 1px; /* Espacio arriba */
+  margin-bottom: 20px; /* Espacio abajo */
+  font-size: 40px; /* Tamaño de fuente */
+  color: #6b6767; /* Color del texto */
+}
+
+.fecha-ejecucion {
+  text-align: center; /* Centra el texto */
+  width: 100%; /* Ocupa todo el ancho */
+  margin-top: 1px; /* Espacio arriba */
+  margin-bottom: 20px; /* Espacio abajo */
+  font-size: 20px; /* Tamaño de fuente */
+  color: #6b6767; /* Color del texto */
 }

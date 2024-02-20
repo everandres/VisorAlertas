@@ -21,11 +21,11 @@ host = 'localhost'
 puerto = '5432'
 db = 'alertas'
 #url_conexion = f'postgresql://{usuario}:{contraseña}@{host}:{puerto}/{db}'
-url_conexion = 'postgresql://postgres:Septiembre0672@db:5432/alertas'
+url_conexion = 'postgresql://postgres:Septiembre0672@localhost:5432/alertas'
 
 
-df_incendios = 'C:/Users/Ever Salazar/Documents/incendios/probabilidad_icv.csv'
-df_deslizamientos = 'C:/Users/Ever Salazar/Documents/deslizamientos/probabilidad_idd.csv'
+df_incendios = 'C:/Users/easalazarm/Documents/Prueba/deslizamientos/probabilidad_icv.csv'
+df_deslizamientos = 'C:/Users/easalazarm/Documents/Prueba/deslizamientos/probabilidad_idd.csv'
 
 def alertas_incendios(url_conexion, ruta_archivo):
     df_incendios = pd.read_csv(ruta_archivo, sep=';', encoding='utf-8')

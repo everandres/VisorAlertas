@@ -22,6 +22,7 @@ Chart.register(
   LinearScale,
   BarElement
 );
+import "./DashboardStyles.css";
 
 const GraficasDeslizamientosIncendios = () => {
   const { incendiosData, deslizamientosData } = useContext(DataContext);
@@ -39,13 +40,11 @@ const GraficasDeslizamientosIncendios = () => {
         {
           data: Object.values(agrupadosPorRegion),
           backgroundColor: [
-            "#FF6384",
-            "#36A2EB",
-            "#FFCE56",
-            "#cc65fe",
-            "#ff6348",
-            "#36a2eb",
-            "#cc65fe",
+            "#c3cdbf",
+            "#79b254",
+            "#55834a",
+            "#486233",
+            "#8cae7b",
           ],
           hoverBackgroundColor: [
             "#FF6384",
@@ -68,7 +67,7 @@ const GraficasDeslizamientosIncendios = () => {
     }, {});
 
     return {
-      labels: ["Probabilidad 1", "Probabilidad 2", "Probabilidad 3"],
+      labels: ["Alerta Amarrilla", "Alerta Naranja", "Alerta Roja"],
       datasets: [
         {
           label: "Número de Eventos por Probabilidad",
@@ -110,73 +109,148 @@ const GraficasDeslizamientosIncendios = () => {
     return Object.entries(agrupadosPorDepartamento).sort((a, b) => b[1] - a[1]);
   };
 
-  const renderizarTablaPorProbabilidad = (datosTabla) => {
+  const fechaEjecucion = mostrarIncendios
+    ? incendiosData[0]?.FECHA_EJECUCION // Utiliza el operador opcional para evitar errores si el array está vacío
+    : deslizamientosData[0]?.FECHA_EJECUCION;
+
+  const renderizarTablaPorProbabilidad = (datosTabla, probabilidad) => {
+    const totalCantidad = datosTabla.reduce(
+      (acc, [, cantidad]) => acc + cantidad,
+      0
+    );
+    const probabilidadClase = `tabla-contenedor probabilidad-${probabilidad}`;
+
     return (
-      <table>
-        <thead>
-          <tr>
-            <th>Departamento</th>
-            <th>Cantidad de municipios</th>
-          </tr>
-        </thead>
-        <tbody>
-          {datosTabla.map(([departamento, cantidad]) => (
-            <tr key={departamento}>
-              <td>{departamento}</td>
-              <td>{cantidad}</td>
+      <div className={probabilidadClase}>
+        <table>
+          <thead>
+            <tr>
+              <th>Departamento</th>
+              <th>Cantidad de municipios</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {datosTabla.map(([departamento, cantidad]) => (
+              <tr key={departamento}>
+                <td>{departamento}</td>
+                <td>{cantidad}</td>
+              </tr>
+            ))}
+            {/* Fila de total */}
+            <tr>
+              <td>
+                <strong>Total</strong>
+              </td>
+              <td>{totalCantidad}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     );
   };
 
+  const opcionesDona = {
+    responsive: true,
+    maintainAspectRatio: true,
+    plugins: {
+      legend: {
+        display: true,
+        labels: {
+          color: "rgb(0, 0, 0)",
+          font: {
+            size: 14,
+          },
+          filter: function (item, chart) {
+            return item.text !== "";
+          },
+        },
+      },
+      title: {
+        display: true,
+        text: "Distribución por Regiones",
+        font: {
+          size: 20,
+        },
+        padding: {
+          top: 10,
+          bottom: 30,
+        },
+      },
+    },
+  };
+
   return (
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "start",
-        gap: "20px",
-      }}
-    >
-      <div style={{ flex: 1, flexDirection: "column" }}>
-        <button onClick={() => setMostrarIncendios(!mostrarIncendios)}>
-          Mostrar {mostrarIncendios ? "Deslizamientos" : "Incendios"}
+    <div className="dashboard">
+      <h1 className="titulo-general">
+        Alertas Vigentes Por Pronóstico de la Amenaza De{" "}
+        {mostrarIncendios
+          ? "Incendios de la Cobertura Vegetal"
+          : "Deslizamientos de tierra"}
+      </h1>
+      <h4 className="fecha-ejecucion">Fecha de ejecución: {fechaEjecucion}</h4>
+
+      <div className="columna-izquierda">
+        <button
+          className="boton-cambio"
+          onClick={() => setMostrarIncendios(!mostrarIncendios)}
+        >
+          {mostrarIncendios ? "Deslizamientos" : "Incendios"}
         </button>
-        {mostrarIncendios ? (
-          <>
-            <h2>Incendios por Región</h2>
-            <Doughnut data={datosGrafica} />
-          </>
-        ) : (
-          <>
-            <h2>Deslizamientos por Región</h2>
-            <Doughnut data={datosGrafica} />
-          </>
-        )}
-        <div style={{ marginTop: "20px" }}>
-          <h3>Total de municipios: {totalMunicipios}</h3>
-          {renderizarTotalesPorRegion()}
+        <div className="contenedor-grafica">
+          <Doughnut data={datosGrafica} options={opcionesDona} />
+          <h1>Total municipios: {totalMunicipios}</h1>
+          <div className="contenedor-totales">
+            {renderizarTotalesPorRegion()}
+          </div>
         </div>
       </div>
-      <div style={{ flex: 1 }}>
-        <h2>Total de Eventos por Probabilidad</h2>
-        <Bar data={datosGraficaProbabilidades} />
-        {/* Tablas por probabilidad */}
-        <div>
-          <h2>Total de Municipios por Probabilidad</h2>
-          <h3>Probabilidad 1</h3>
+      <div className="columna-derecha">
+        <div className="contenedor-grafica-barras">
+          <Bar
+            data={datosGraficaProbabilidades}
+            options={{
+              responsive: true,
+              maintainAspectRatio: true,
+              scales: {
+                y: {
+                  beginAtZero: true,
+                  title: {
+                    display: true,
+                    text: "Cantidad de alertas",
+                  },
+                },
+              },
+              plugins: {
+                legend: {
+                  display: true,
+                  labels: {
+                    color: "rgb(0, 0, 0)",
+                    font: {
+                      size: 14,
+                    },
+                    // Función para filtrar la leyenda y ocultar la que tiene la etiqueta vacía
+                    filter: function (item, chart) {
+                      // Retorna verdadero para mostrar la etiqueta, falso para ocultarla
+                      return item.text !== "";
+                    },
+                  },
+                },
+              },
+            }}
+          />
+        </div>
+        <div className="contenedor-tablas">
           {renderizarTablaPorProbabilidad(
-            prepararDatosTablaProbabilidades(datosActuales, "1")
+            prepararDatosTablaProbabilidades(datosActuales, "1"),
+            "1" // Pasa este argumento para la probabilidad 1
           )}
-          <h3>Probabilidad 2</h3>
           {renderizarTablaPorProbabilidad(
-            prepararDatosTablaProbabilidades(datosActuales, "2")
+            prepararDatosTablaProbabilidades(datosActuales, "2"),
+            "2" // Pasa este argumento para la probabilidad 2
           )}
-          <h3>Probabilidad 3</h3>
           {renderizarTablaPorProbabilidad(
-            prepararDatosTablaProbabilidades(datosActuales, "3")
+            prepararDatosTablaProbabilidades(datosActuales, "3"),
+            "3" // Pasa este argumento para la probabilidad 3
           )}
         </div>
       </div>
