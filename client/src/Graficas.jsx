@@ -176,6 +176,21 @@ const GraficasDeslizamientosIncendios = () => {
           bottom: 30,
         },
       },
+      tooltip: {
+        // Aquí integras el nuevo plugin de tooltip
+        callbacks: {
+          label: function (context) {
+            const label = context.label || "";
+            const value = context.raw;
+            const total = context.dataset.data.reduce(
+              (acc, curr) => acc + curr,
+              0
+            );
+            const percentage = ((value / total) * 100).toFixed(2) + "%";
+            return `${label}: ${value} (${percentage})`;
+          },
+        },
+      },
     },
   };
 
