@@ -4,8 +4,8 @@ services:
     build: ./server/src
     image: mi_app_personalizada:latest # Nombre personalizado para la imagen construida
     volumes:
-      - "C:/Users/easalazarm/Documents/Prueba/incendios:/var/lib/data/incendios"
-      - "C:/Users/easalazarm/Documents/Prueba/deslizamientos:/var/lib/data/deslizamientos"
+      - "/home/mets/Documents/incendios:/var/lib/data/incendios"
+      - "/home/mets/Documents/deslizamientos:/var/lib/data/deslizamientos"
     depends_on:
       - db
     environment:
@@ -49,7 +49,7 @@ services:
   frontend:
     build: ./client
     ports:
-      - "8080:80"
+      - "4500:80"
     depends_on:
       - backend
     networks:

@@ -18,6 +18,9 @@ FROM nginx:alpine
 # Aseguramos que la ruta de origen es la correcta al copiar al contenedor de nginx
 COPY --from=build-stage /usr/src/app/client/build /usr/share/nginx/html
 
+# Copia la configuración personalizada de Nginx al contenedor
+COPY ./nginx/default.conf /etc/nginx/conf.d/default.conf
+
 EXPOSE 8080
 
 CMD ["nginx", "-g", "daemon off;"]

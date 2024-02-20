@@ -52,19 +52,19 @@ export const DataProvider = ({ children }) => {
     data: incendiosData,
     isLoading: incendiosLoading,
     error: incendiosError,
-  } = useFetchData("http://192.168.156.34:8000/api/v1/incendios");
+  } = useFetchData("http://192.168.156.6:8000/api/v1/incendios");
   const {
     data: departamentosData,
     isLoading: departamentosLoading,
     error: departamentosError,
-  } = useFetchData("http://192.168.156.34:8000/api/v1/departamentos");
+  } = useFetchData("http://192.168.156.6:8000/api/v1/departamentos");
 
   // Nuevo estado para datos de deslizamientos
   const {
     data: deslizamientosData,
     isLoading: deslizamientosLoading,
     error: deslizamientosError,
-  } = useFetchData("http://192.168.156.34:8000/api/v1/deslizamientos");
+  } = useFetchData("http://192.168.156.6:8000/api/v1/deslizamientos");
 
   // Modifica la condición de carga para incluir deslizamientos
   if (incendiosLoading || departamentosLoading || deslizamientosLoading) {
