@@ -4,8 +4,8 @@ services:
     build: ./server/src
     image: mi_app_personalizada:latest # Nombre personalizado para la imagen construida
     volumes:
-      - "/home/mets/Documents/incendios:/var/lib/data/incendios"
-      - "/home/mets/Documents/deslizamientos:/var/lib/data/deslizamientos"
+      - "C:/Users/easalazarm/Documents/Prueba/incendios:/var/lib/data/incendios"
+      - "C:/Users/easalazarm/Documents/Prueba/deslizamientos:/var/lib/data/deslizamientos"
     depends_on:
       - db
     environment:
