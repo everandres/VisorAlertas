@@ -32,4 +32,3 @@ END
 # Ejecuta el script CargarSHP.py una vez al inicio
 python CargarSHP.py
 python AlertasSQL.py
-python monitor.py
