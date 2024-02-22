@@ -14,6 +14,7 @@ const CapaDepartamentos = ({ departamentos, estilo }) => {
       key={index}
       data={departamento.geom}
       style={estiloDepartamentos}
+      pane="departamentosPane"
       // Aquí puedes agregar eventos como onEachFeature si necesitas interactividad
     />
   ));

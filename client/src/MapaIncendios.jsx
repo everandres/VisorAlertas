@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { MapContainer, TileLayer, GeoJSON, useMap } from "react-leaflet";
+import { MapContainer, TileLayer, GeoJSON, useMap, Pane } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import CapaDepartamentos from "./CapaDepartamentos"; // Importa el nuevo componente
@@ -224,6 +224,8 @@ export const MapaIncendios = ({ incendios, departamentos, deslizamientos }) => {
             onEachFeature={handleMouseOverOut} // Asume que es adecuado para deslizamientos o crea un manejador específico
           />
         ))}
+      {/* Crear un pane específico para la capa de departamentos con un z-index alto */}
+      <Pane name="departamentosPane" style={{ zIndex: 500 }}></Pane>
       <CapaDepartamentos departamentos={departamentos} />
     </MapContainer>
   );
