@@ -32,3 +32,5 @@ END
 # Ejecuta el script CargarSHP.py una vez al inicio
 python CargarSHP.py
 python AlertasSQL.py
+
+#Agrego un comentario
