@@ -84,7 +84,7 @@ def vista_deslizamientos(url_conexion):
 CREATE OR REPLACE VIEW alertas_deslizamientos AS
 SELECT d.*, jsonb_build_object(
   'type', 'Feature',
-  'geometry', ST_AsGeoJSON(ST_GeometryN(mg.geom, 1), 4)::jsonb,
+  'geometry', ST_AsGeoJSON((SELECT geom FROM (SELECT geom, ST_Area(geom) AS area FROM ST_Dump(mg.geom)) AS subquery ORDER BY area DESC LIMIT 1), 4)::jsonb,
   'properties', jsonb_build_object(
     'PROBABILIDAD_DESC', CASE
                            WHEN d."PROBABILIDAD" = 1 THEN 'BAJA'
@@ -117,7 +117,7 @@ def vista_incendios(url_conexion):
 CREATE OR REPLACE VIEW alertas_incendios AS
 SELECT i.*, jsonb_build_object(
   'type',       'Feature',
-  'geometry',   ST_AsGeoJSON(ST_GeometryN(mg.geom, 1), 4)::jsonb,
+    'geometry', ST_AsGeoJSON((SELECT geom FROM (SELECT geom, ST_Area(geom) AS area FROM ST_Dump(mg.geom)) AS subquery ORDER BY area DESC LIMIT 1), 4)::jsonb,
   'properties', jsonb_build_object(
     'PROBABILIDAD_DESC', CASE
                            WHEN i."PROBABILIDAD" = 1 THEN 'BAJA'
